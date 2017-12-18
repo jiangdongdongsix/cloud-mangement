@@ -8,7 +8,7 @@ import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsiv
 class EchartsQueueTime extends React.Component{
     render(){
         return(
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={400}>
                 <LineChart
                     data={this.props.data}
                     margin={{top: 5, right: 30, left: 20, bottom: 5}}

@@ -50,11 +50,12 @@ const renderActiveShape = (props) => {
 
 class TableTypleCountCharts extends React.Component{
 
-    state={
+    state = {
         activeIndex: 0,
     }
 
-    onPieEnter(data, index) {
+    onPieEnter= (data, index) =>{
+        console.log("2223");
         this.setState({
             activeIndex: index,
         });
@@ -62,8 +63,8 @@ class TableTypleCountCharts extends React.Component{
     render () {
         const { data } = this.props;
         return (
-            <ResponsiveContainer width="100%" height={300}>
-            <PieChart height={100}>
+            <ResponsiveContainer width="100%" height={400}>
+            <PieChart  >
                 <Pie
                     activeIndex={this.state.activeIndex}
                     activeShape={renderActiveShape}
@@ -74,7 +75,7 @@ class TableTypleCountCharts extends React.Component{
                     innerRadius={60}
                     outerRadius={80}
                     fill="#8884d8"
-                    onMouseEnter={this.onPieEnter}
+                    onMouseDown={this.onPieEnter}
                 />
             </PieChart>
             </ResponsiveContainer>
