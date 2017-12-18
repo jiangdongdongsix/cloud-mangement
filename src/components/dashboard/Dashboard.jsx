@@ -1,7 +1,7 @@
 /**
  * Created by hao.cheng on 2017/5/3.
  */
-import React from 'react';
+import React,{PropTypes} from 'react';
 import { Row, Col, Card, Timeline, Icon,Checkbox,DatePicker,Select,Button } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import EchartsViews from './EchartsViews';
@@ -9,7 +9,7 @@ import EchartsProjects from './EchartsProjects';
 import b1 from '../../style/imgs/b1.jpg';
 import ReactEcharts from 'echarts-for-react';
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,PieChart, Pie} from 'recharts';
-import { getAllData,getQueueData,getQuantityData } from '../../axios';
+import { getData } from '../../axios';
 
 
 const Option = Select.Option;
@@ -29,7 +29,7 @@ class Dashboard extends React.Component {
     };
 
     start = () => {
-        getAllData().then(res => {
+        getData('/iqescloud/restaurant/simple').then(res => {
             console.log(res.simpleRestaurantList);
             this.setState({
                 options:res.simpleRestaurantList
@@ -58,7 +58,7 @@ class Dashboard extends React.Component {
         console.log(this.state.resId.toString());
         const resId = this.state.resId.toString();
         const date = this.state.date;
-        getQueueData(resId,date).then(res => {
+        getData('/iqescloud/queueInfo/manyRestaurants/chart/averageQueueTime?restaurantIds='+resId+'&date='+date).then(res => {
             console.log(res.queueTimeContrast);
             this.setState({
                 barData: [...res.queueTimeContrast.map(val => {
@@ -71,11 +71,15 @@ class Dashboard extends React.Component {
             console.log(this.state.barData);
         });
 
-        getQuantityData(resId,date).then(res => {
+        getData('/iqescloud/queueInfo/manyRestaurants/chart/queues?restaurantIds='+resId+'&date='+date).then(res => {
             console.log(res.queuesContrast);
             this.setState({
                 QuantityData:res.queuesContrast
             })
+        });
+
+        getData('/iqescloud/queueInfo/manyRestaurants/chart/churnRate?restaurantIds='+resId+'&date='+date).then(res =>{
+            console.log(res);
         })
     };
 
@@ -104,9 +108,17 @@ class Dashboard extends React.Component {
             })
         }
 
-        const data02 = [{name: 'Group A', value: 2400}, {name: 'Group B', value: 4567},
-            {name: 'Group C', value: 1398}, {name: 'Group D', value: 9800},
-            {name: 'Group E', value: 3908}, {name: 'Group F', value: 4800}];
+        const RateData = [];
+
+
+        const data02 = [
+            {name: 'Group A', value: 2400},
+            {name: 'Group B', value: 4567},
+            {name: 'Group C', value: 1398},
+            {name: 'Group D', value: 9800},
+            {name: 'Group E', value: 3908},
+            {name: 'Group F', value: 4800}
+            ];
 
         return (
             <div className="gutter-example button-demo">
@@ -167,8 +179,8 @@ class Dashboard extends React.Component {
                                 <div className="pb-m">
                                     <h4>流失率</h4>
                                 </div>
-                                <PieChart width={800} height={400}>
-                                    <Pie data={data02} cx={500} cy={200} innerRadius={40} outerRadius={80} fill="#82ca9d"/>
+                                <PieChart width={400} height={300}>
+                                    <Pie data={data02} cx={120} cy={100} innerRadius={50} outerRadius={100} fill="#82ca9d"/>
                                     <Tooltip/>
                                 </PieChart>
                             </Card>
@@ -185,7 +197,7 @@ class Dashboard extends React.Component {
                                         data={QuantityData}
                                         margin={{top: 5, right: 30, left: 20, bottom: 5}}
                                     >
-                                        <XAxis />
+                                        <XAxis dataKey="name" />
                                         <YAxis />
                                         <CartesianGrid strokeDasharray="1 1" />
                                         <Tooltip />

@@ -88,7 +88,7 @@ class ExampleAnimations extends React.Component {
         this.start();
     }
     start = () => {
-        getData().then(res => {
+        getData('/iqescloud/restaurant/summaryInfo').then(res => {
             console.log(res);
             let countInit = res.restaurantsSummaryInfo.length;
             this.setState({

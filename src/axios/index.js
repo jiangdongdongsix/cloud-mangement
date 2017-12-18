@@ -34,22 +34,6 @@ export const admin = () => get({url: config.MOCK_AUTH_ADMIN});
 // 访问权限获取
 export const guest = () => get({url: config.MOCK_AUTH_VISITOR});
 
-//门店基本信息
-export const getData = () => axios.get('/iqescloud/restaurant/summaryInfo').then(function (response) {
-    console.log(response.data);
-    return response.data;
-}).catch(function (error) {
-    console.log(error);
-});
-
-//门店详细信息
-export const getDataId = (id) => axios.get('/iqescloud/restaurant/detailedInfo/id?id='+id).then(function (response) {
-    console.log(response.data);
-    return response.data;
-}).catch(function (error) {
-    console.log(error);
-});
-
 
 export const getShopInfo = (url) => axios.get(url).then(function (response) {
     return response.data;
@@ -58,25 +42,7 @@ export const getShopInfo = (url) => axios.get(url).then(function (response) {
 });
 
 
-//多店对比获得所有门店
-export const getAllData = () => axios.get('/iqescloud/restaurant/simple').then(function (response) {
-    console.log(response.data);
-    return response.data;
-}).catch(function (error) {
-    console.log(error);
-});
-
-//多店对比
-export const getQueueData = (restaurantIds,date) => axios.get('/iqescloud/queueInfo/manyRestaurants/chart/averageQueueTime?restaurantIds='+restaurantIds+'&date='+date).then(function (response) {
-    console.log(response.data);
-    return response.data;
-}).catch(function (error) {
-    console.log(error);
-});
-
-
-export const getQuantityData = (restaurantIds,date) => axios.get('/iqescloud/queueInfo/manyRestaurants/chart/queues?restaurantIds='+restaurantIds+'&date='+date).then(function (response) {
-    console.log(response.data);
+export const getData = (url) => axios.get(url).then(function (response) {
     return response.data;
 }).catch(function (error) {
     console.log(error);
