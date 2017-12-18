@@ -62,8 +62,8 @@ class TableTypleCountCharts extends React.Component{
     render () {
         const { data } = this.props;
         return (
-
-            <PieChart width={800} height={400}  >
+            <ResponsiveContainer width="100%" height={300}>
+            <PieChart height={100}>
                 <Pie
                     activeIndex={this.state.activeIndex}
                     activeShape={renderActiveShape}
@@ -77,6 +77,7 @@ class TableTypleCountCharts extends React.Component{
                     onMouseEnter={this.onPieEnter}
                 />
             </PieChart>
+            </ResponsiveContainer>
 
         );
     }

@@ -14,7 +14,8 @@ class Analysis extends React.Component{
 
     state = {
         data: [],
-        tableData:[]
+        tableData:[],
+        churnData:[]
     };
     componentDidMount() {
         this.start("1","2017-12-12");
@@ -57,6 +58,25 @@ class Analysis extends React.Component{
             });
         });
 
+        getShopInfo("/iqescloud/queueInfo/oneRestaurant/chart/churnRate?restaurantId="+id).then(res => {
+            console.log(res);
+            let d = [];
+            res.churnRateList.map((val,index) => {
+                console.log(val.tableTypeChurnRatePOJOList);
+                let info = {
+                    key:index,
+                    name:val.queueTime,
+                    "小桌":val.tableTypeChurnRatePOJOList[0].churnRate,
+                    "中桌":val.tableTypeChurnRatePOJOList[1].churnRate,
+                    "大桌":val.tableTypeChurnRatePOJOList[2].churnRate
+                }
+                d.push(info);
+            })
+            this.setState({
+                churnData: d
+            });
+        });
+
     };
 
     getSearchInfo = (id,date) => {
@@ -91,7 +111,7 @@ class Analysis extends React.Component{
                     <Col className="gutter-row" md={12}>
                         <div className="gutter-box">
                             <Card title="流失率走势图" bordered={false}>
-                                <RechartsRadarChart />
+                                <EchartsQueueTime data={this.state.churnData}/>
                             </Card>
                         </div>
                     </Col>

@@ -6,6 +6,7 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchData, receiveData } from '@/action';
+import history from '../../history';
 
 const FormItem = Form.Item;
 
@@ -16,12 +17,12 @@ class Login extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         const { auth: nextAuth = {} } = nextProps;
-        const { router } = this.props;
         if (nextAuth.data && nextAuth.data.uid) {   // 判断是否登陆
             localStorage.setItem('user', JSON.stringify(nextAuth.data));
-            router.push('/');
+            history.push('/app/animation/exampleAnimations');
         }
     }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -33,30 +34,29 @@ class Login extends React.Component {
             }
         });
     };
-    gitHub = () => {
-        window.location.href = 'https://github.com/login/oauth/authorize?client_id=792cdcd244e98dcd2dee&redirect_uri=http://localhost:3006/&scope=user&state=reactAdmin';
-    };
+
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="login">
                 <div className="login-form" >
                     <div className="login-logo">
-                        <span>React Admin</span>
+                        <h3>智能排队叫号系统云端管理</h3>
                     </div>
                     <Form onSubmit={this.handleSubmit} style={{maxWidth: '300px'}}>
                         <FormItem>
                             {getFieldDecorator('userName', {
                                 rules: [{ required: true, message: '请输入用户名!' }],
                             })(
-                                <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="管理员输入admin, 游客输入guest" />
+                                <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="请输入用户名" />
                             )}
                         </FormItem>
                         <FormItem>
                             {getFieldDecorator('password', {
                                 rules: [{ required: true, message: '请输入密码!' }],
                             })(
-                                <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="管理员输入admin, 游客输入guest" />
+                                <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="请输入密码" />
                             )}
                         </FormItem>
                         <FormItem>
@@ -70,15 +70,11 @@ class Login extends React.Component {
                             <Button type="primary" htmlType="submit" className="login-form-button" style={{width: '100%'}}>
                                 登录
                             </Button>
-                            <p style={{display: 'flex', justifyContent: 'space-between'}}>
-                                <a href="">或 现在就去注册!</a>
-                                <a onClick={this.gitHub} ><Icon type="github" />(第三方登录)</a>
-                            </p>
+
                         </FormItem>
                     </Form>
                 </div>
             </div>
-
         );
     }
 }
@@ -91,6 +87,4 @@ const mapDispatchToProps = dispatch => ({
     fetchData: bindActionCreators(fetchData, dispatch),
     receiveData: bindActionCreators(receiveData, dispatch)
 });
-
-
 export default connect(mapStateToPorps, mapDispatchToProps)(Form.create()(Login));

@@ -7,7 +7,7 @@ import App from './App';
 export default () => (
     <Router>
         <Switch>
-            <Route exact path="/" render={() => <Redirect to="/app/animation/exampleAnimations" push />} />
+            <Route exact path="/" component={Login}/>
             <Route path="/app" component={App} />
             <Route path="/404" component={NotFound} />
             <Route path="/login" component={Login} />
