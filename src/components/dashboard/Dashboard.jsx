@@ -21,7 +21,8 @@ class Dashboard extends React.Component {
         resId:[],
         date:'',
         barData:[],
-        QuantityData:[]
+        QuantityData:[],
+        RateData:[]
     };
 
     componentDidMount() {
@@ -80,6 +81,10 @@ class Dashboard extends React.Component {
 
         getData('/iqescloud/queueInfo/manyRestaurants/chart/churnRate?restaurantIds='+resId+'&date='+date).then(res =>{
             console.log(res);
+            this.setState({
+                RateData:res.churnRateContrast
+            });
+            console.log(this.state.RateData);
         })
     };
 
@@ -89,36 +94,41 @@ class Dashboard extends React.Component {
             options.push(<Option style={{'zIndex':'9999'}} key={this.state.options[i].restaurantId}>{this.state.options[i].restaurantName}</Option>);
         }
         const data = [];
-        let len = this.state.barData.length;
-        for(let i=0;i<len;i++){
-            data.push({
-                name:this.state.barData[i].restaurantName,
-                小桌:this.state.barData[i].小桌,
-                中桌:this.state.barData[i].中桌,
-                大桌:this.state.barData[i].大桌,
-            })
+        if(this.state.barData !== ''){
+            let len = this.state.barData.length;
+            for(let i=0;i<len;i++){
+                data.push({
+                    name:this.state.barData[i].restaurantName,
+                    小桌:this.state.barData[i].小桌,
+                    中桌:this.state.barData[i].中桌,
+                    大桌:this.state.barData[i].大桌,
+                })
+            }
         }
+
 
         const QuantityData = [];
-        let len1 = this.state.QuantityData.length;
-        for(let i=0;i<len1;i++){
-            QuantityData.push({
-                name:this.state.QuantityData[i].restaurantName,
-                排队人数:this.state.QuantityData[i].queueQuantity
-            })
+        if(this.state.QuantityData !== ''){
+            let len1 = this.state.QuantityData.length;
+            for(let i=0;i<len1;i++){
+                QuantityData.push({
+                    name:this.state.QuantityData[i].restaurantName,
+                    排队人数:this.state.QuantityData[i].queueQuantity
+                })
+            }
         }
 
+
         const RateData = [];
-
-
-        const data02 = [
-            {name: 'Group A', value: 2400},
-            {name: 'Group B', value: 4567},
-            {name: 'Group C', value: 1398},
-            {name: 'Group D', value: 9800},
-            {name: 'Group E', value: 3908},
-            {name: 'Group F', value: 4800}
-            ];
+        if(this.state.RateData !== ''){
+            let len2 = this.state.RateData.length;
+            for(let i=0;i<len2;i++){
+                RateData.push({
+                    name:this.state.RateData[i].restaurantName,
+                    value:this.state.RateData[i].rate || 0
+                })
+            }
+        }
 
         return (
             <div className="gutter-example button-demo">
@@ -138,7 +148,7 @@ class Dashboard extends React.Component {
                             <div className="gutter-box">
                                 <div>
                                     选择时间
-                                    <DatePicker style={{'marginLeft':'10px'}} onChange={this.handleTime}/>
+                                    <DatePicker style={{'marginLeft':'10px'}} onChange={this.handleTime} required/>
                                 </div>
                             </div>
                         </Col>
@@ -179,10 +189,12 @@ class Dashboard extends React.Component {
                                 <div className="pb-m">
                                     <h4>流失率</h4>
                                 </div>
-                                <PieChart width={400} height={300}>
-                                    <Pie data={data02} cx={120} cy={100} innerRadius={50} outerRadius={100} fill="#82ca9d"/>
+                                <ResponsiveContainer width="100%" height={300}>
+                                <PieChart width={400} height={300} style={{zIndex:999}}>
+                                    <Pie data={RateData} cx={120} cy={100} innerRadius={50} outerRadius={100} fill="#82ca9d" />
                                     <Tooltip/>
                                 </PieChart>
+                                </ResponsiveContainer>
                             </Card>
                         </div>
                     </Col>
