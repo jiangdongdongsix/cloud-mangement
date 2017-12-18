@@ -62,7 +62,7 @@ class AdvancedSearchForm extends React.Component {
                         initialValue:this.props.date,
                         rules: [{ required: true, message: '请选取时间' }],
                     })(
-                        <DatePicker format="YYYY-MM-DD"/>
+                        <DatePicker format="YYYY-MM-DD"  style={{ width: 120 }} />
                     )}
                 </FormItem>
             </Col>
