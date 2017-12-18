@@ -4,7 +4,7 @@
 import React from 'react';
 import { Row, Col, Card, Switch,Button,Input } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
-import { getDataId } from '../../axios';
+import { getData } from '../../axios';
 import { Link, withRouter } from 'react-router-dom';
 import img from './../../style/imgs/u215.png'
 
@@ -24,7 +24,7 @@ class BasicAnimations extends React.Component {
     }
 
     start = () => {
-        getDataId(this.state.id).then(res => {
+        getData('/iqescloud/restaurant/detailedInfo/id?id='+this.state.id).then(res => {
             console.log(res);
             this.setState({
                 data:res.restaurantDetailInfo,
