@@ -39,7 +39,7 @@ class AdvancedSearchForm extends React.Component {
         const children = [];
         const dateFormat = 'YYYY-MM-DD';
         children.push(
-            <Col span={4} key={1} >
+            <Col span={5} key={1} >
                 <FormItem label={`选择门店`}>
                     {getFieldDecorator(`restaurantId`,{
                         initialValue:this.props.id,
@@ -56,7 +56,7 @@ class AdvancedSearchForm extends React.Component {
             </Col>
         )
         children.push(
-            <Col span={4} key={2}>
+            <Col span={5} key={2}>
                 <FormItem label={`选取时间`}>
                     {getFieldDecorator(`date`,{
                         initialValue:this.props.date,
