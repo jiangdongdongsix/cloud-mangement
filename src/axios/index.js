@@ -43,7 +43,7 @@ export const getData = () => axios.get('/iqescloud/restaurant/summaryInfo').then
 });
 
 //门店详细信息
-export const getDataId = (id) => axios.get('/iqescloud/restaurant/detailedInfo/id?id=4').then(function (response) {
+export const getDataId = (id) => axios.get('/iqescloud/restaurant/detailedInfo/id?id='+id).then(function (response) {
     console.log(response.data);
     return response.data;
 }).catch(function (error) {

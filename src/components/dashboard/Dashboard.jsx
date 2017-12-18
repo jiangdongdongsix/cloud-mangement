@@ -8,54 +8,12 @@ import EchartsViews from './EchartsViews';
 import EchartsProjects from './EchartsProjects';
 import b1 from '../../style/imgs/b1.jpg';
 import ReactEcharts from 'echarts-for-react';
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,PieChart, Pie} from 'recharts';
 import { getAllData,getQueueData,getQuantityData } from '../../axios';
 
+
 const Option = Select.Option;
-const optionPie = {
-    tooltip: {
-        trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        x: 'left',
-        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-    },
-    series: [
-        {
-            name:'访问来源',
-            type:'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-                normal: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    show: true,
-                    textStyle: {
-                        fontSize: '30',
-                        fontWeight: 'bold'
-                    }
-                }
-            },
-            labelLine: {
-                normal: {
-                    show: false
-                }
-            },
-            data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
-            ]
-        }
-    ]
-};
+
 class Dashboard extends React.Component {
 
     state = {
@@ -146,6 +104,10 @@ class Dashboard extends React.Component {
             })
         }
 
+        const data02 = [{name: 'Group A', value: 2400}, {name: 'Group B', value: 4567},
+            {name: 'Group C', value: 1398}, {name: 'Group D', value: 9800},
+            {name: 'Group E', value: 3908}, {name: 'Group F', value: 4800}];
+
         return (
             <div className="gutter-example button-demo">
                 <BreadcrumbCustom first="跨店排队信息对比" />
@@ -205,11 +167,10 @@ class Dashboard extends React.Component {
                                 <div className="pb-m">
                                     <h4>流失率</h4>
                                 </div>
-                                <ReactEcharts
-                                    option={optionPie}
-                                    style={{height: '300px', width: '100%'}}
-                                    className={'react_for_echarts'}
-                                />
+                                <PieChart width={800} height={400}>
+                                    <Pie data={data02} cx={500} cy={200} innerRadius={40} outerRadius={80} fill="#82ca9d"/>
+                                    <Tooltip/>
+                                </PieChart>
                             </Card>
                         </div>
                     </Col>

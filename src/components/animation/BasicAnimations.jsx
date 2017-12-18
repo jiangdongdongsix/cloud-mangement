@@ -15,11 +15,11 @@ class BasicAnimations extends React.Component {
         this.state = {
             data: {},
             tableTypes: [],
-            id : props.params.id,
+            id : props.match.params.id,
         };
     }
     componentDidMount() {
-        console.log(this.props.params.id);
+        console.log(this.props.match.params.id);
         this.start();
     }
 
