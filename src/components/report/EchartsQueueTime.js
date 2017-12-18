@@ -20,7 +20,7 @@ class EchartsQueueTime extends React.Component{
                     <Legend />
                     <Line type="monotone" dataKey="小桌" stroke="#8884d8" activeDot={{r: 8}} />
                     <Line type="monotone" dataKey="中桌" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="大桌" stroke="#82ca9d" />
+                    <Line type="monotone" dataKey="大桌" stroke="#5f5f5f" />
                 </LineChart>
             </ResponsiveContainer>
         )
