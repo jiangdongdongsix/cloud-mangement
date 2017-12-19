@@ -26,8 +26,9 @@ import AuthBasic from '../components/auth/Basic';
 import RouterEnter from '../components/auth/RouterEnter';
 import Wysiwyg from 'bundle-loader?lazy!../components/ui/Wysiwyg';  // 按需加载富文本配置
 import Bundle from '../components/widget/Bundle';
-import ReportTable from '../components/report/ReportTable';
-import Analysis from '../components/report/Analysis';
+import ReportTablePage from '../containers/report/ReportTableContainer';
+import AnalysisPage from '../containers/report/AnalysisContainer';
+
 
 const WysiwygBundle = (props) => (
     <Bundle load={Wysiwyg}>
@@ -51,8 +52,8 @@ export default class CRouter extends Component {
                 <Route exact path="/app/animation/basicAnimations/:id" component={BasicAnimations} />
                 <Route exact path="/app/animation/exampleAnimations" component={ExampleAnimations} />
 
-                <Route exact path="/app/report/table" component = {ReportTable} />
-                <Route exact path="/app/report/analysis" component = {Analysis} />
+                <Route exact path="/app/report/table" component = {ReportTablePage} />
+                <Route exact path="/app/report/analysis" component = {AnalysisPage} />
 
                 <Route render={() => <Redirect to="/404" />} />
             </Switch>

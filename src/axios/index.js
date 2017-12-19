@@ -34,6 +34,91 @@ export const admin = () => get({url: config.MOCK_AUTH_ADMIN});
 // 访问权限获取
 export const guest = () => get({url: config.MOCK_AUTH_VISITOR});
 
+// 登录
+export const login = (params) => axios.post('/iqescloud/login', {
+    account: params.account,
+    pwd: params.pwd,
+}).then(function (response) {
+    return response.data;
+}).catch(function (error) {
+    console.log(error);
+});
+
+// 获取单店报表表格数据
+export const getTableData = (params) => axios.get("/iqescloud/queueInfo/oneRestaurant/table?restaurantId="+params.id+"&date="+params.date).then(function (response) {
+    let res = response.data;
+    res.queueInfos.map((val,index) => {
+        val.key = index;
+        return val;
+    })
+    console.log(res);
+    return res;
+
+}).catch(function (error) {
+    console.log(error);
+    console.log("数据解析出错");
+});
+
+//获取平均时间
+export const averageQueueTime = (params) => axios.get("/iqescloud/queueInfo/oneRestaurant/chart/averageQueueTime?restaurantId="+params.id+"&date="+params.date).then(function (response) {
+    let res = response.data
+    let d = [];
+    res.averageQueueTime.map((val,index) => {
+        let info = {
+            key:index,
+            name:val.date,
+            "小桌":val.tableTypeQueueTimePOJOList[0].queueTime,
+            "中桌":val.tableTypeQueueTimePOJOList[1].queueTime,
+            "大桌":val.tableTypeQueueTimePOJOList[2].queueTime
+        }
+        d.push(info);
+    })
+    return d;
+}).catch(function (error) {
+    console.log(error);
+});
+
+
+//获取平均时间
+export const tableTypePercentage = (params) => axios.get("/iqescloud/queueInfo/oneRestaurant/chart/tableTypePercentage?restaurantId="+params.id).then(function (response) {
+    let res= response.data;
+    let d = [];
+    res.tableTypePercentageList.map((val,index) => {
+        let info = {
+            key:index,
+            name:val.tableTypeDescribe,
+            value:val.number
+
+        }
+        d.push(info);
+    })
+    return d;
+}).catch(function (error) {
+    console.log(error);
+});
+
+//获取流失率
+export const churnRate = (params) => axios.get("/iqescloud/queueInfo/oneRestaurant/chart/churnRate?restaurantId="+params.id).then(function (response) {
+    let res = response.data;
+    let d = [];
+    res.churnRateList.map((val,index) => {
+        console.log(val.tableTypeChurnRatePOJOList);
+        let info = {
+            key:index,
+            name:val.queueTime,
+            "小桌":val.tableTypeChurnRatePOJOList[0].churnRate,
+            "中桌":val.tableTypeChurnRatePOJOList[1].churnRate,
+            "大桌":val.tableTypeChurnRatePOJOList[2].churnRate
+        }
+        d.push(info);
+    })
+    return d;
+}).catch(function (error) {
+    console.log(error);
+});
+
+
+
 
 export const getShopInfo = (url) => axios.get(url).then(function (response) {
     return response.data;
@@ -47,3 +132,4 @@ export const getData = (url) => axios.get(url).then(function (response) {
 }).catch(function (error) {
     console.log(error);
 });
+

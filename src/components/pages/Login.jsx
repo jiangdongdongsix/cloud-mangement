@@ -13,11 +13,11 @@ const FormItem = Form.Item;
 class Login extends React.Component {
     componentWillMount() {
         const { receiveData } = this.props;
-        receiveData(null, 'auth');
+        receiveData(null, 'login');
     }
     componentWillReceiveProps(nextProps) {
-        const { auth: nextAuth = {} } = nextProps;
-        if (nextAuth.data && nextAuth.data.uid) {   // 判断是否登陆
+        const { login: nextAuth = {} } = nextProps;
+        if (nextAuth.data) {   // 判断是否登陆
             localStorage.setItem('user', JSON.stringify(nextAuth.data));
             history.push('/app/animation/exampleAnimations');
         }
@@ -29,8 +29,7 @@ class Login extends React.Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 const { fetchData } = this.props;
-                if (values.userName === 'admin' && values.password === 'admin') fetchData({funcName: 'admin', stateName: 'auth'});
-                if (values.userName === 'guest' && values.password === 'guest') fetchData({funcName: 'guest', stateName: 'auth'});
+                fetchData({funcName: 'login',params:{account:values.userName,pwd:values.password} ,stateName: 'login'});
             }
         });
     };
@@ -79,12 +78,4 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToPorps = state => {
-    const { auth } = state.httpData;
-    return { auth };
-};
-const mapDispatchToProps = dispatch => ({
-    fetchData: bindActionCreators(fetchData, dispatch),
-    receiveData: bindActionCreators(receiveData, dispatch)
-});
-export default connect(mapStateToPorps, mapDispatchToProps)(Form.create()(Login));
+export default Login;
