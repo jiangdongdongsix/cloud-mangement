@@ -39,11 +39,12 @@ class Login extends React.Component {
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="login">
+                <div className="login-logo">
+                    <h1>智能排队叫号系统云端管理</h1>
+                    <h2>Queuing management cloud services</h2>
+                </div>
                 <div className="login-form" >
-                    <div className="login-logo">
-                        <h3>智能排队叫号系统云端管理</h3>
-                    </div>
-                    <Form onSubmit={this.handleSubmit} style={{maxWidth: '300px'}}>
+                    <Form onSubmit={this.handleSubmit} style={{maxWidth: '500px',width:'70%'}}>
                         <FormItem>
                             {getFieldDecorator('userName', {
                                 rules: [{ required: true, message: '请输入用户名!' }],
@@ -61,12 +62,12 @@ class Login extends React.Component {
                         <FormItem>
                             {getFieldDecorator('remember', {
                                 valuePropName: 'checked',
-                                initialValue: true,
+                                initialValue: false,
                             })(
-                                <Checkbox>记住我</Checkbox>
+                                <Checkbox >记住我</Checkbox>
                             )}
                             <a className="login-form-forgot" href="" style={{float: 'right'}}>忘记密码</a>
-                            <Button type="primary" htmlType="submit" className="login-form-button" style={{width: '100%'}}>
+                            <Button  htmlType="submit" className="login-form-button" >
                                 登录
                             </Button>
 
