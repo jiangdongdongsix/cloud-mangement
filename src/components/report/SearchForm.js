@@ -14,6 +14,7 @@ class AdvancedSearchForm extends React.Component {
 
     componentWillMount() {
         const { name } = this.props;
+        console.log(this.props);
         const { dispatch } = this.props;
         console.log(name);
         if(name == 'tableData'){

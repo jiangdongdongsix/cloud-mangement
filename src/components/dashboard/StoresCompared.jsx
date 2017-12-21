@@ -1,26 +1,22 @@
-/**
- * Created by hao.cheng on 2017/5/3.
- */
-import React,{PropTypes} from 'react';
-import { Row, Col, Card, Timeline, Icon,Checkbox,DatePicker,Select,Button } from 'antd';
+import React from 'react';
+import { Row, Col, Card,DatePicker,Select,Button } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
-import EchartsViews from './EchartsViews';
-import EchartsProjects from './EchartsProjects';
-import b1 from '../../style/imgs/b1.jpg';
-import ReactEcharts from 'echarts-for-react';
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,PieChart, Pie} from 'recharts';
 import { getData } from '../../axios';
+import  RechartsBar from './RechartsBar';
+import RechartsPie from './RechartsPie';
+import RechartsBarSingle from './RechartsBarSingle';
+import {fetchData} from "../../action/index";
+import {BarData,QuantityData,RateData} from "../../axios/index";
 
 
 const Option = Select.Option;
 
-class Dashboard extends React.Component {
-
+class ComparedInfo extends React.Component {
     state = {
         options:[],
         resId:[],
         date:'',
-        barData:[],
+        BarData:[],
         QuantityData:[],
         RateData:[]
     };
@@ -31,11 +27,9 @@ class Dashboard extends React.Component {
 
     start = () => {
         getData('/iqescloud/restaurant/simple').then(res => {
-            console.log(res.simpleRestaurantList);
             this.setState({
                 options:res.simpleRestaurantList
             });
-            console.log(this.state.options);
         });
     };
 
@@ -49,44 +43,31 @@ class Dashboard extends React.Component {
     };
 
     handleTime = (date, dateString)=>{
-        console.log(dateString);
         this.setState({
             date:dateString
         })
     };
 
     handleSure = ()=>{
-        console.log(this.state.resId.toString());
         const resId = this.state.resId.toString();
         const date = this.state.date;
-        getData('/iqescloud/queueInfo/manyRestaurants/chart/averageQueueTime?restaurantIds='+resId+'&date='+date).then(res => {
-            console.log(res.queueTimeContrast);
-            this.setState({
-                barData: [...res.queueTimeContrast.map(val => {
-                    val.小桌 = val.tableTypeQueueTimes[0].queueTime;
-                    val.中桌 = val.tableTypeQueueTimes[1].queueTime;
-                    val.大桌 = val.tableTypeQueueTimes[2].queueTime;
-                    return val;
-                })],
-            });
-            console.log(this.state.barData);
-        });
-
-        getData('/iqescloud/queueInfo/manyRestaurants/chart/queues?restaurantIds='+resId+'&date='+date).then(res => {
-            console.log(res.queuesContrast);
-            this.setState({
-                QuantityData:res.queuesContrast
-            })
-        });
-
-        getData('/iqescloud/queueInfo/manyRestaurants/chart/churnRate?restaurantIds='+resId+'&date='+date).then(res =>{
-            console.log(res);
-            this.setState({
-                RateData:res.churnRateContrast
-            });
-            console.log(this.state.RateData);
-        })
+        const { dispatch } = this.props;
+        dispatch(fetchData({funcName: 'BarData',params:{id:resId,date:date},stateName:'BarData'}));
+        dispatch(fetchData({funcName: 'QuantityData',params:{id:resId,date:date},stateName:'QuantityData'}));
+        dispatch(fetchData({funcName: 'RateData',params:{id:resId,date:date},stateName:'RateData'}));
     };
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        if(this.state.resId && this.state.date){
+            this.setState({
+                BarData:nextProps.BarData.data,
+                QuantityData:nextProps.QuantityData.data,
+                RateData:nextProps.RateData.data
+            })
+        }
+
+    }
 
     render() {
         const options = [];
@@ -94,21 +75,21 @@ class Dashboard extends React.Component {
             options.push(<Option style={{'zIndex':'9999'}} key={this.state.options[i].restaurantId}>{this.state.options[i].restaurantName}</Option>);
         }
         const data = [];
-        if(this.state.barData !== ''){
-            let len = this.state.barData.length;
+        if(this.state.BarData){
+            let len = this.state.BarData.length;
             for(let i=0;i<len;i++){
                 data.push({
-                    name:this.state.barData[i].restaurantName,
-                    小桌:this.state.barData[i].小桌,
-                    中桌:this.state.barData[i].中桌,
-                    大桌:this.state.barData[i].大桌,
+                    name:this.state.BarData[i].restaurantName,
+                    小桌:this.state.BarData[i].小桌,
+                    中桌:this.state.BarData[i].中桌,
+                    大桌:this.state.BarData[i].大桌,
                 })
             }
         }
 
 
         const QuantityData = [];
-        if(this.state.QuantityData !== ''){
+        if(this.state.QuantityData){
             let len1 = this.state.QuantityData.length;
             for(let i=0;i<len1;i++){
                 QuantityData.push({
@@ -120,12 +101,12 @@ class Dashboard extends React.Component {
 
 
         const RateData = [];
-        if(this.state.RateData !== ''){
+        if(this.state.RateData){
             let len2 = this.state.RateData.length;
             for(let i=0;i<len2;i++){
                 RateData.push({
                     name:this.state.RateData[i].restaurantName,
-                    value:this.state.RateData[i].rate || 0
+                    value:this.state.RateData[i].rate
                 })
             }
         }
@@ -163,21 +144,7 @@ class Dashboard extends React.Component {
                                 <div className="pb-m">
                                     <h4>顾客排队平均等待时间</h4>
                                 </div>
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <BarChart
-                                        data={data}
-                                        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                                    >
-                                        <XAxis dataKey="name" />
-                                        <YAxis />
-                                        <CartesianGrid strokeDasharray="3 3" />
-                                        <Tooltip />
-                                        <Legend />
-                                        <Bar dataKey="小桌" fill="#8884d8" />
-                                        <Bar dataKey="中桌" fill="#82ca9d" />
-                                        <Bar dataKey="大桌" fill="#8884d8" />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                                <RechartsBar data={data} />
                             </Card>
                         </div>
                     </Col>
@@ -189,12 +156,7 @@ class Dashboard extends React.Component {
                                 <div className="pb-m">
                                     <h4>流失率</h4>
                                 </div>
-                                <ResponsiveContainer width="100%" height={300}>
-                                <PieChart width={400} height={300} style={{zIndex:999}}>
-                                    <Pie data={RateData} cx={120} cy={100} innerRadius={50} outerRadius={100} fill="#82ca9d" />
-                                    <Tooltip/>
-                                </PieChart>
-                                </ResponsiveContainer>
+                                <RechartsPie data={RateData} />
                             </Card>
                         </div>
                     </Col>
@@ -204,19 +166,7 @@ class Dashboard extends React.Component {
                                 <div className="pb-m">
                                     <h4>排队人数对比</h4>
                                 </div>
-                                <ResponsiveContainer width="100%" height={300}>
-                                    <BarChart
-                                        data={QuantityData}
-                                        margin={{top: 5, right: 30, left: 20, bottom: 5}}
-                                    >
-                                        <XAxis dataKey="name" />
-                                        <YAxis />
-                                        <CartesianGrid strokeDasharray="1 1" />
-                                        <Tooltip />
-                                        <Legend />
-                                        <Bar dataKey="排队人数" fill="#8884d8" />
-                                    </BarChart>
-                                </ResponsiveContainer>
+                                <RechartsBarSingle data={QuantityData}/>
                             </Card>
                         </div>
                     </Col>
@@ -227,4 +177,4 @@ class Dashboard extends React.Component {
     }
 }
 
-export default Dashboard;
+export default ComparedInfo;

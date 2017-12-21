@@ -4,50 +4,59 @@
 import React from 'react';
 import { Row, Col, Card, Switch,Button,Input } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
-import { getData } from '../../axios';
+import { getData } from '../../axios/index';
 import { Link, withRouter } from 'react-router-dom';
-import img from './../../style/imgs/u215.png'
+import img from '../../style/imgs/u215.png';
+import {getDetailInfo} from "../../axios/index";
+import {fetchData} from "../../action/index";
 
 
 class BasicAnimations extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: {},
+            detailData: {},
             tableTypes: [],
             id : props.match.params.id,
         };
     }
     componentDidMount() {
-        console.log(this.props.match.params.id);
         this.start();
     }
 
     start = () => {
-        getData('/iqescloud/restaurant/detailedInfo/id?id='+this.state.id).then(res => {
-            console.log(res);
-            this.setState({
-                data:res.restaurantDetailInfo,
-                tableTypes:res.restaurantDetailInfo.tableTypes
-            });
-            console.log(this.state.data);
-        });
+        const { dispatch } = this.props;
+        dispatch(fetchData({funcName: 'getDetailInfo',params:this.props.match.params.id,stateName:'detailData'}));
     };
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        const { detailData } = nextProps;
+        console.log(detailData.data);
+        this.setState({
+            detailData:detailData.data,
+            tableTypes:detailData.data.tableTypes
+        })
+    }
+
     render() {
         const tableElements=[];      //保存渲染以后 JSX的数组
-        for(let table of this.state.tableTypes){
-            tableElements.push(
-                <div style={{'paddingBottom':'10px'}}>
-                    <Input type='text' value={table.describe+`(`+ table.eatMinNumber+`-`+table.eatMaxNumber+`人)`+table.quantity+'桌'}/>
-                </div>
+        if(this.state.tableTypes){
+            for(let table of this.state.tableTypes){
+                tableElements.push(
+                    <div style={{'paddingBottom':'10px'}}>
+                        <Input type='text' value={table.describe+`(`+ table.eatMinNumber+`-`+table.eatMaxNumber+`人)`+table.quantity+'桌'}/>
+                    </div>
                 )
+            }
         }
+
         return (
             <div className="gutter-example button-demo">
-                <h3 style={{'padding':'10px'}}>{this.state.data.name}</h3>
+                <h3 style={{'padding':'10px'}}>{this.state.detailData.name}</h3>
                 <Card bordered={false}>
                     <Row className="mb-m">
-                        <Button><Link to={'/app/animation/exampleAnimations'}>返回首页</Link></Button>
+                        <Button><Link to={'/app/dashboard/basic'}>返回首页</Link></Button>
                     </Row>
                     <Row style={{'marginBottom':'20px','marginTop':'10px'}}>
                         <Col span={10}>
@@ -56,7 +65,7 @@ class BasicAnimations extends React.Component {
                                     <span>门店名称</span>
                                 </Col>
                                 <Col span={14}>
-                                    <Input type='text' value={this.state.data.name}/>
+                                    <Input type='text' value={this.state.detailData.name}/>
                                 </Col>
                             </Row>
                         </Col>
@@ -67,7 +76,7 @@ class BasicAnimations extends React.Component {
                                     <span>营业时间</span>
                                 </Col>
                                 <Col span={14}>
-                                    <Input type='text' value={this.state.data.businessHours}/>
+                                    <Input type='text' value={this.state.detailData.businessHours}/>
                                 </Col>
                             </Row>
                         </Col>
@@ -79,7 +88,7 @@ class BasicAnimations extends React.Component {
                                     <span>门店详细地址</span>
                                 </Col>
                                 <Col span={14}>
-                                    <Input type='text' value={this.state.data.detailAddress}/>
+                                    <Input type='text' value={this.state.detailData.detailAddress}/>
                                 </Col>
                             </Row>
                         </Col>
@@ -90,7 +99,7 @@ class BasicAnimations extends React.Component {
                                     <span>门店电话</span>
                                 </Col>
                                 <Col span={14}>
-                                    <Input type='text' value={this.state.data.telephone}/>
+                                    <Input type='text' value={this.state.detailData.telephone}/>
                                 </Col>
                             </Row>
                         </Col>

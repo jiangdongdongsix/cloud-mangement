@@ -7,7 +7,6 @@ import * as config from './config';
 
 export const getPros = () => axios.get('/iqescloud/restaurant/summaryInfo').then(function (response) {
     return response;
-    console.log('1111');
 }).catch(function (error) {
     console.log(error);
 });
@@ -50,7 +49,7 @@ export const getTableData = (params) => axios.get("/iqescloud/queueInfo/oneResta
     res.queueInfos.map((val,index) => {
         val.key = index;
         return val;
-    })
+    });
     console.log(res);
     return res;
 
@@ -132,4 +131,65 @@ export const getData = (url) => axios.get(url).then(function (response) {
 }).catch(function (error) {
     console.log(error);
 });
+
+//门店基本信息
+export const getBasicInfo = (params)=>axios.get('/iqescloud/restaurant/summaryInfo').then(function (response) {
+    let res = response.data;
+    let data = [];
+    res.restaurantsSummaryInfo.map(val => {
+            val.key = val.id;
+            val.status = val.state === '1' ? '在线' : '离线';
+            data.push(val);
+        },
+    );
+    return data;
+}).catch(function(err){
+    console.log(err);
+});
+
+//门店详细信息
+export const getDetailInfo = (params)=>axios.get('/iqescloud/restaurant/detailedInfo/id?id='+params).then(function (response) {
+    let res = response.data;
+    let data = {};
+    data = res.restaurantDetailInfo;
+    return data;
+}).catch(function(err){
+    console.log(err);
+});
+
+//等待时间
+export const BarData = (params)=>axios.get('/iqescloud/queueInfo/manyRestaurants/chart/averageQueueTime?restaurantIds='+params.id+'&date='+params.date).then(function(response){
+    let res = response.data;
+    let data = res.queueTimeContrast.map(val =>{
+        val.小桌 = val.tableTypeQueueTimes[0].queueTime;
+        val.中桌 = val.tableTypeQueueTimes[1].queueTime;
+        val.大桌 = val.tableTypeQueueTimes[2].queueTime;
+        return val;
+    });
+    console.log(data);
+    return data;
+}).catch(function(err){
+    console.log(err);
+});
+
+//排队人数
+export const QuantityData = (params)=>axios.get('/iqescloud/queueInfo/manyRestaurants/chart/queues?restaurantIds='+params.id+'&date='+params.date).then(function(response){
+    let res = response.data;
+    let QuantityData = res.queuesContrast;
+    return QuantityData;
+}).catch(function(err){
+    console.log(err);
+});
+
+//流失率
+export const RateData = (params)=>axios.get('/iqescloud/queueInfo/manyRestaurants/chart/churnRate?restaurantIds='+params.id+'&date='+params.date).then(function(response){
+    let res = response.data;
+    let RateData = res.churnRateContrast;
+    return RateData;
+}).catch(function(err){
+    console.log(err);
+});
+
+
+
 

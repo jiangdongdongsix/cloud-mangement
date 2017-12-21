@@ -50,7 +50,7 @@ const columns = [{
 class ReportTable extends React.Component {
     state = {
         data:[]
-    }
+    };
 
     componentWillMount() {
         const { tableData } = this.props;

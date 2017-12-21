@@ -65,14 +65,14 @@ class SiderCustom extends Component {
                     onOpenChange={this.openMenu}
                 >
                     <SubMenu
-                        key="/app/animation"
+                        key="/app/dashboard"
                         title={<span><Icon type="scan" /><span className="nav-text" style={{'fontSize':'15px'}}>门店管理</span></span>}
                     >
 
-                        <Menu.Item key="/app/animation/exampleAnimations"><Link to={'/app/animation/exampleAnimations'}>门店基本信息</Link></Menu.Item>
+                        <Menu.Item key="/app/dashboard/basic"><Link to={'/app/dashboard/basic'}>门店基本信息</Link></Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="/app/dashboard/index">
-                    <Link to={'/app/dashboard/index'}><Icon type="mobile" /><span className="nav-text" style={{'fontSize':'15px'}}>跨店排队信息分析</span></Link>
+                    <Menu.Item key="/app/dashboard/compared">
+                    <Link to={'/app/dashboard/compared'}><Icon type="mobile" /><span className="nav-text" style={{'fontSize':'15px'}}>跨店排队信息分析</span></Link>
                     </Menu.Item>
                     <SubMenu
                         key="/app/report"

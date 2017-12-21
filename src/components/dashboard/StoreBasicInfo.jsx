@@ -2,11 +2,12 @@
  * Created by hao.cheng on 2017/5/8.
  */
 import React from 'react';
-import { getData } from '../../axios';
+import { getData } from '../../axios/index';
 import { Row, Col, Card, Table, Popconfirm, Button,Icon } from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import { Link, withRouter } from 'react-router-dom';
-import hashHistory from './../../history.js'
+import { fetchData, receiveData } from '../../action/index';
+import hashHistory from '../../history.js'
 
 
 class ExampleAnimations extends React.Component {
@@ -64,7 +65,7 @@ class ExampleAnimations extends React.Component {
         this.setState({
             id:record.key
         });
-        hashHistory.push("/app/animation/basicAnimations/"+record.key);
+        hashHistory.push("/app/dashboard/detail/"+record.key);
     };
 
     handleAdd = () => {
@@ -83,25 +84,19 @@ class ExampleAnimations extends React.Component {
     };
 
 
-    componentDidMount() {
-        console.log(this.state.id);
-        this.start();
-    }
-    start = () => {
-        getData('/iqescloud/restaurant/summaryInfo').then(res => {
-            console.log(res);
-            let countInit = res.restaurantsSummaryInfo.length;
-            this.setState({
-                dataSource: [...res.restaurantsSummaryInfo.map(val => {
-                    val.key = val.id;
-                    val.status = val.state ==='1'?'在线':'离线';
-                    return val;
-                })],
-                count:countInit
-            });
-            console.log(this.state.dataSource);
-        });
+    componentWillMount() {
+        const { dispatch } = this.props;
+        dispatch(fetchData({funcName: 'getBasicInfo',stateName:'dataSource'}));
     };
+
+
+
+    componentWillReceiveProps(nextProps) {
+        const { dataSource } = nextProps;
+        this.setState({
+            dataSource:dataSource.data
+        })
+    }
 
     render() {
         const columns = this.columns;
@@ -117,10 +112,6 @@ class ExampleAnimations extends React.Component {
                                     bordered
                                     dataSource={this.state.dataSource}
                                     columns={columns}
-                                    rowClassName={(record, index) => {
-                                        if (this.state.deleteIndex === record.key) return 'animated zoomOutLeft min-black';
-                                        return 'animated fadeInRight';
-                                    }}
                                 />
                             </Card>
                         </div>
