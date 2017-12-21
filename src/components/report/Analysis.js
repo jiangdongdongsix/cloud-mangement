@@ -39,7 +39,7 @@ class Analysis extends React.Component{
                         <div className="gutter-box">
                             <Card title="门店排队时间走势图" bordered={false} className="card-box">
                                 <SearchForm name="chartData"/>
-                                <EchartsQueueTime data={this.state.data}/>
+                                <EchartsQueueTime data={this.state.data} style={{marginTop:'10px'}}/>
                             </Card>
                         </div>
                     </Col>
