@@ -64,23 +64,36 @@ class SiderCustom extends Component {
                     openKeys={this.state.firstHide ? null : [this.state.openKey]}
                     onOpenChange={this.openMenu}
                 >
-                    <SubMenu
-                        key="/app/dashboard"
-                        title={<span><Icon type="scan" /><span className="nav-text" style={{'fontSize':'15px'}}>门店管理</span></span>}
-                    >
 
-                        <Menu.Item key="/app/dashboard/basic"><Link to={'/app/dashboard/basic'}>门店基本信息</Link></Menu.Item>
-                    </SubMenu>
-                    <Menu.Item key="/app/dashboard/compared">
-                    <Link to={'/app/dashboard/compared'}><Icon type="mobile" /><span className="nav-text" style={{'fontSize':'15px'}}>跨店排队信息分析</span></Link>
+                    <Menu.Item key="/app/animation">
+                        <span className="nav-text" style={{'fontSize':'13px'}}>门店管理</span>
                     </Menu.Item>
-                    <SubMenu
-                        key="/app/report"
-                        title={<span><Icon type="safety" /><span className="nav-text" style={{'fontSize':'15px'}}>单店报表分析</span></span>}
-                    >
-                        <Menu.Item key="/app/report/table"><Link to={'/app/report/table'}>单店报表</Link></Menu.Item>
-                        <Menu.Item key="/app/report/analysis"><Link to={'/app/report/analysis'}>单店数据分析</Link></Menu.Item>
-                    </SubMenu>
+
+                    <Menu.Item key="/app/animation/exampleAnimations" >
+                        <Link to={'/app/animation/exampleAnimations'}><i className="iconfont">&#xe612;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>门店基本信息</span></Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="/app/dashboard/">
+                       <span className="nav-text" style={{'fontSize':'12px'}}>跨店比较</span>
+                    </Menu.Item>
+
+                    <Menu.Item key="/app/dashboard/index">
+                        <Link to={'/app/dashboard/index'}><i className="iconfont">&#xe64c;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>跨店排队信息分析</span></Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="/app/report">
+                        <span className="nav-text" style={{'fontSize':'12px'}}>单店排队信息查看</span>
+                    </Menu.Item>
+
+                    <Menu.Item key="/app/report/table" >
+                        <Link to={'/app/report/table'}><i className="iconfont">&#xe667;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>单店报表</span></Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="/app/report/analysis">
+                        <Link to={'/app/report/analysis'}><i className="iconfont">&#xe7b5;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>单店数据分析</span></Link>
+                    </Menu.Item>
+
+
                 </Menu>
                 <style>
                     {`

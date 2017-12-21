@@ -64,10 +64,10 @@ class Login extends React.Component {
                                 valuePropName: 'checked',
                                 initialValue: false,
                             })(
-                                <Checkbox >记住我</Checkbox>
+                                <Checkbox>记住我</Checkbox>
                             )}
                             <a className="login-form-forgot" href="" style={{float: 'right'}}>忘记密码</a>
-                            <Button  htmlType="submit" className="login-form-button" >
+                            <Button  htmlType="submit" type="primary" style={{ width: '100%'}}>
                                 登录
                             </Button>
 

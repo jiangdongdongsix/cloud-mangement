@@ -15,12 +15,12 @@ class EchartsQueueTime extends React.Component{
                 >
                     <XAxis dataKey="name" />
                     <YAxis />
-                    <CartesianGrid strokeDasharray="3 3" />
+                    <CartesianGrid strokeDasharray="3 3"  vertical={true}/>
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="小桌" stroke="#8884d8" activeDot={{r: 8}} />
-                    <Line type="monotone" dataKey="中桌" stroke="#82ca9d" />
-                    <Line type="monotone" dataKey="大桌" stroke="#5f5f5f" />
+                    <Line type="monotone" legendType="square"  dataKey="小桌" stroke="#f55b59" activeDot={{r: 8}} />
+                    <Line type="monotone" legendType="square" dataKey="中桌" stroke="#47dad8"  unit="89" activeDot={{r: 8}} />
+                    <Line type="monotone" legendType="square" dataKey="大桌" stroke="#29cd84" activeDot={{r: 8}} />
                 </LineChart>
             </ResponsiveContainer>
         )

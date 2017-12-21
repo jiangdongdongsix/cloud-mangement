@@ -74,7 +74,7 @@ class ReportTable extends React.Component {
                         <div className="gutter-box">
                             <Card title="单店报表" bordered={false} className="card-box">
                                 <SearchForm name="tableData"/>
-                                <Table columns={columns} dataSource={this.state.data} />
+                                <Table columns={columns} dataSource={this.state.data} style={{marginTop:'10px'}}/>
                             </Card>
                         </div>
 
