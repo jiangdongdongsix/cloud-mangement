@@ -56,7 +56,7 @@ class BasicAnimations extends React.Component {
                 <h3 style={{'padding':'10px'}}>{this.state.detailData.name}</h3>
                 <Card bordered={false}>
                     <Row className="mb-m">
-                        <Button><Link to={'/app/dashboard/basic'}>返回首页</Link></Button>
+                        <Button style={{'marginLeft':'90%'}}><Link to={'/app/dashboard/basic'}>返回首页</Link></Button>
                     </Row>
                     <Row style={{'marginBottom':'20px','marginTop':'10px'}}>
                         <Col span={10}>

@@ -9,6 +9,7 @@ class RechartsPie extends React.Component {
     render () {
         const COLORS = ['#FFAC47', '#748df6','#F35959','#FED852','#6ADFE9','#8ACF65'];
         const { data } = this.props;
+        console.log(data);
         return (
             <ResponsiveContainer width="100%" height={300}>
                 <PieChart width={400} height={300} style={{zIndex:999}}>

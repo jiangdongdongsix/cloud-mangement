@@ -84,7 +84,6 @@ export const tableTypePercentage = (params) => axios.get("/iqescloud/queueInfo/o
     let d = [];
     res.tableTypePercentageList.map((val,index) => {
         let info = {
-            key:index,
             name:val.tableTypeDescribe,
             value:val.number
 
