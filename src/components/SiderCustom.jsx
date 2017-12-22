@@ -65,20 +65,20 @@ class SiderCustom extends Component {
                     onOpenChange={this.openMenu}
                 >
 
-                    <Menu.Item key="/app/animation">
+                    <Menu.Item key="/app/dashboard">
                         <span className="nav-text" style={{'fontSize':'13px'}}>门店管理</span>
                     </Menu.Item>
 
-                    <Menu.Item key="/app/animation/exampleAnimations" >
-                        <Link to={'/app/animation/exampleAnimations'}><i className="iconfont">&#xe612;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>门店基本信息</span></Link>
+                    <Menu.Item key="/app/dashboard/basic" >
+                        <Link to={'/app/dashboard/basic'}><i className="iconfont">&#xe612;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>门店基本信息</span></Link>
                     </Menu.Item>
 
                     <Menu.Item key="/app/dashboard/">
                        <span className="nav-text" style={{'fontSize':'12px'}}>跨店比较</span>
                     </Menu.Item>
 
-                    <Menu.Item key="/app/dashboard/index">
-                        <Link to={'/app/dashboard/index'}><i className="iconfont">&#xe64c;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>跨店排队信息分析</span></Link>
+                    <Menu.Item key="/app/dashboard/compared">
+                        <Link to={'/app/dashboard/compared'}><i className="iconfont">&#xe64c;</i><span className="nav-text" style={{'fontSize':'16px',marginLeft:'15px'}}>跨店排队信息分析</span></Link>
                     </Menu.Item>
 
                     <Menu.Item key="/app/report">
